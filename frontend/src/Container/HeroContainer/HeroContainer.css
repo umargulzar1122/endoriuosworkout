@@ -1,0 +1,39 @@
+.hero__container {
+  margin: 0 100px;
+  color: #fff;
+  line-height: 1.1;
+  font-family: "Roboto Condensed", Arial, sans-serif;
+  display: flex;
+  flex-direction: column;
+  margin-top: 50px;
+}
+.hero__container .heading {
+  font-style: italic;
+  width: 30%;
+  text-transform: uppercase;
+  font-size: 60px;
+  font-weight: 700;
+}
+.hero__container .description {
+  font-size: 16px;
+  width: 30%;
+  line-height: 1.5;
+}
+.hero__container .tour__button {
+  padding: 10px 20px;
+  color: #fff;
+  background-color: transparent;
+  border: none;
+  font-size: 13px;
+  height: 40px;
+  min-width: 80px;
+  transition: all 0.5s ease-in-out;
+  font-weight: 400;
+  letter-spacing: 1px;
+  background: #e1193e;
+  border-radius: 2px;
+  text-transform: uppercase;
+}
+.hero__container .tour__button:hover {
+  background: #e1193eb8 !important;
+}

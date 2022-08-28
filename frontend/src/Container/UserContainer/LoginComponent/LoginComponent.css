@@ -1,0 +1,67 @@
+.login__container {
+  background-image: url(../../../assets/img/login.jpg);
+  min-height: 100vh;
+  background-attachment: fixed;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  color: #fff;
+  display: flex;
+  justify-content: end;
+  align-items: center;
+  font-size: 16px;
+  padding: 30px;
+}
+.login__container form {
+  width: 40%;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+}
+.login__container form input,
+input[type="password"] {
+  color: #fff;
+  font-size: 13px;
+  width: 100%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #212529;
+  box-sizing: border-box;
+  background-color: transparent;
+}
+.login__container form input:active,
+.login__container form input:focus,
+.login__container form input:focus-visible,
+.login__container form input:focus-within {
+  border: 1px solid #212529 !important;
+  outline: none !important;
+}
+.login__container form .buttons__container {
+  display: flex;
+  flex-direction: row;
+}
+.login__container form .buttons__container button {
+  width: 30%;
+  background: #e1193eb8;
+  color: #fff;
+  font-size: 13px;
+  font-weight: 400;
+  padding: 5px;
+  border-radius: 2px;
+}
+.login__container form div:nth-child(4) {
+  display: flex;
+  justify-content: space-between;
+  margin: 10px;
+}
+.login__container form div:nth-child(4) label {
+  cursor: pointer;
+}
+.login__container form div:nth-child(4) span a {
+  text-decoration: none;
+}
+.login__container form div:nth-child(4) span a:hover {
+  text-decoration: underline;
+  line-height: 1.5;
+}
