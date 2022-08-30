@@ -1,15 +1,35 @@
-import React from 'react';
+import React, { Suspense, createContext } from 'react';
 import ReactDOM from 'react-dom/client';
+import {
+  BrowserRouter,
+} from "react-router-dom";
 import './index.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import App from './App';
-import LoginComponent from './Container/UserContainer/LoginComponent/LoginComponent';
-import RegisterComponent from './Container/UserContainer/RegisterComponent/RegisterComponent';
+import LoadingScreenComponent from './Container/LoadingScreen/LoadingScreenComponent';
+import axios from "axios";
+import { GET_LOGGED_IN_USER } from "./utils/Constant";
+const App = React.lazy(() => import('./App'));
+export const UserContext = createContext();
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(
-  // <App />
-  // <LoginComponent></LoginComponent>
-  <RegisterComponent></RegisterComponent>
-);
+axios.get(GET_LOGGED_IN_USER).then((success) => {
+  renderComponent(success);
+}).catch((error) => {
+  console.error(error)
+  renderComponent(null);
+});
+
+
+
+function renderComponent(user) {
+  const root = ReactDOM.createRoot(document.getElementById('root'));
+  root.render(
+    <UserContext.Provider value={user}>
+      <BrowserRouter>
+        <Suspense fallback={<LoadingScreenComponent></LoadingScreenComponent>}>
+          <App></App>
+        </Suspense>
+      </BrowserRouter>
+    </UserContext.Provider>
+  );
+}
 

@@ -44,7 +44,8 @@ const userSchema = new mongoose.Schema(
 	});
 
 const createToken = (_id) => {
-	return jwt.sign({ _id }, process.env.TOKEN_SECRET_KEY, { expiresIn: process.env.TOKEN_EXPIRES })
+	console.log("_id", _id);
+	return jwt.sign({ id: _id }, process.env.TOKEN_SECRET_KEY, { expiresIn: process.env.TOKEN_EXPIRES })
 }
 
 
@@ -99,6 +100,53 @@ userSchema.statics.registerUser = async function (user) {
 		return {
 			success: false,
 			error: { name: error.name, message: error.message }
+		}
+	}
+}
+
+userSchema.statics.userLogin = async function (user) {
+	try {
+		if (!user.email) {
+			return {
+				success: false,
+				error: { name: "emailempty", message: "Email required" }
+			}
+		}
+		if (!user.password) {
+			return {
+				success: false,
+				error: { name: "emailempty", message: "Password required" }
+			}
+		}
+
+		var userContext = await this.findOne({ email: user.email }).select("+password");
+		if (!userContext) {
+			return {
+				success: false,
+				error: { name: "loginfailed", message: "Incorrect Email or Password" }
+			}
+		}
+
+		//console.log("🚀 ~ file: userModel.js ~ line 122 ~ userContext", userContext)
+		const match = await bcrypt.compare(user.password, userContext.password);
+		if (!match) {
+			return {
+				success: false,
+				error: { name: "loginfailed", message: "Incorrect Email or Password" }
+			}
+		}
+
+		var token = createToken(userContext._id);
+		userContext.password = null;
+		return { success: true, user: userContext, token };
+
+	} catch (error) {
+		return {
+			success: false,
+			error: {
+				name: error.name,
+				message: error.message
+			}
 		}
 	}
 }

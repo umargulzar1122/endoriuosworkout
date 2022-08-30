@@ -1,3 +1,7 @@
+.nav__container {
+  position: relative;
+  z-index: 9;
+}
 .nav__container ul {
   display: flex;
   justify-content: center;

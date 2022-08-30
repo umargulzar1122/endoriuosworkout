@@ -1,7 +1,7 @@
 const express = require('express');
-
+const cookieParser = require("cookie-parser");
 const app = express();
-
+app.use(cookieParser());
 /* Importing the userRoutes file. */
 const userRoutes = require("./routes/userRoutes/userRoutes");
 const bodyPartsRoutes = require("./routes/bodyPartsRoutes/bodyPartsRoutes");

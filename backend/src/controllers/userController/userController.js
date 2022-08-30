@@ -1,5 +1,5 @@
 const User = require("../../model/usermodel/userModel");
-
+const setToken = require("../../utils/jwtToken");
 
 exports.registerUser = async (req, res, next) => {
 	try {
@@ -23,6 +23,27 @@ exports.registerUser = async (req, res, next) => {
 	}
 }
 
-exports.userLogin = async (rqe, res, next) => {
+exports.userLogin = async (req, res, next) => {
+	try {
+		var result = await User.userLogin(req.body);
+		if (result.success) {
+			setToken(result.user, 200, result.token, res);
+		}
+		res.status(400).json(result);
+	} catch (error) {
+		return {
+			success: false,
+			error: {
+				name: error.name,
+				message: error.message
+			}
+		}
+	}
+}
 
+exports.getLoggedInUser = async (req, res, next) => {
+	res.status(200).json({
+		success: true,
+		user: req.user
+	});
 }
