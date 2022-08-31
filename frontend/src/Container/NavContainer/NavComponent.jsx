@@ -1,5 +1,7 @@
 import React, { useContext } from 'react'
 import { Link } from "react-router-dom";
+import axios from "axios";
+import { LOGOUT_USER } from "../../utils/Constant";
 import "./NavComponent.css";
 
 import { UserContext } from '../../index';
@@ -7,8 +9,14 @@ import { UserContext } from '../../index';
 const NavComponent = () => {
 
 	const userData = useContext(UserContext);
+	const logout = async () => {
+		try {
+			await axios.get(LOGOUT_USER);
+			window.location.href = "/";
+		} catch (error) {
 
-	debugger
+		}
+	}
 	return (
 		<>
 			<div className='nav__container'>
@@ -48,11 +56,16 @@ const NavComponent = () => {
 						userData &&
 						<>
 							<li>
-								<Link>
+								<Link to="profile">
 									<button className='button'>
 										Profile
 									</button>
 								</Link>
+							</li>
+							<li>
+								<button className='button' onClick={logout}>
+									Logout
+								</button>
 							</li>
 						</>
 					}

@@ -19,7 +19,7 @@ exports.registerUser = async (req, res, next) => {
 		}
 		res.status(400).json(result);
 	} catch (error) {
-		res.status(400).json({ success: false, error: { name: error.name, message: error.message } });
+		res.status(500).json({ success: false, error: { name: error.name, message: error.message } });
 	}
 }
 
@@ -31,13 +31,7 @@ exports.userLogin = async (req, res, next) => {
 		}
 		res.status(400).json(result);
 	} catch (error) {
-		return {
-			success: false,
-			error: {
-				name: error.name,
-				message: error.message
-			}
-		}
+		res.status(500).json({ success: false, error: { name: error.name, message: error.message } });
 	}
 }
 
@@ -46,4 +40,27 @@ exports.getLoggedInUser = async (req, res, next) => {
 		success: true,
 		user: req.user
 	});
+}
+exports.logoutuser = async (req, res) => {
+	try {
+		/* This is setting the cookie to null. */
+		res.cookie("token", null, {
+			expires: new Date(Date.now()),
+			httpOnly: true
+		});
+		/* This is a way to send a response to the user. It is sending a response to the user. */
+		res.status(200).json({
+			success: true,
+			message: "Logout"
+		});
+	} catch (error) {
+		/* This is a way to handle errors. It is a middleware that is used to handle errors. */
+		return res.status(500).json({
+			success: false,
+			error: {
+				name: error.name,
+				message: error.message
+			}
+		});
+	}
 }

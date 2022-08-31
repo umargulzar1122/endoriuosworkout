@@ -12,7 +12,7 @@ const App = React.lazy(() => import('./App'));
 export const UserContext = createContext();
 
 axios.get(GET_LOGGED_IN_USER).then((success) => {
-  renderComponent(success);
+  renderComponent(success.data.user);
 }).catch((error) => {
   console.error(error)
   renderComponent(null);
