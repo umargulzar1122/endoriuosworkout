@@ -1,6 +1,7 @@
 .hero__container {
   margin: 0 100px;
   color: #fff;
+  height: 85vh;
   line-height: 1.1;
   font-family: "Roboto Condensed", Arial, sans-serif;
   display: flex;

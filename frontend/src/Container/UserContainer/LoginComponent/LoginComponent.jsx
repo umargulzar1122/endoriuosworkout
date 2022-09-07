@@ -3,6 +3,36 @@ import { UserReducer, USER_REGISTER_INITIAL_STATE } from "../Reducers/UserReduce
 import axios from "axios";
 import { LOGIN_USER } from "../../../utils/Constant";
 import "./LoginComponent.css";
+
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
+const showError = (message) => {
+	toast.error(message, {
+		position: "top-left",
+		autoClose: 2000,
+		hideProgressBar: false,
+		closeOnClick: true,
+		pauseOnHover: false,
+		draggable: false,
+		progress: undefined,
+
+	});
+}
+
+const showInfoMessage = (message) => {
+	toast.info(message, {
+		position: "top-left",
+		autoClose: 2000,
+		hideProgressBar: false,
+		closeOnClick: true,
+		pauseOnHover: false,
+		draggable: false,
+		progress: undefined,
+
+	});
+}
+
 const LoginComponent = () => {
 
 	const [userState, dispatch] = useReducer(UserReducer, USER_REGISTER_INITIAL_STATE);
@@ -17,10 +47,10 @@ const LoginComponent = () => {
 		e.preventDefault();
 
 		if (!userState.user.email) {
-			return alert("Email Required");
+			return showError("Email Required");
 		}
 		if (!userState.user.password) {
-			return alert("Password Required");
+			return showError("Password Required");
 		}
 
 		try {
@@ -40,12 +70,13 @@ const LoginComponent = () => {
 				type: "POST_USER_ERROR",
 				payload: { name: e.target.name, value: e.target.value, error: error },
 			});
-			alert(error);
+			showError(error.response.data.error.message);
 		}
 
 	}
 	return (
 		<>
+			<ToastContainer />
 			<div className='login__container'>
 				<form onSubmit={onSubmit}>
 					<input type="text" value={userState.user.email} placeholder="Enter Email or Username  " name="email" required onChange={handleChange} />

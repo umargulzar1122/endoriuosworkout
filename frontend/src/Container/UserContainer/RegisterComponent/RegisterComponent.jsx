@@ -3,11 +3,45 @@ import { UserReducer, USER_REGISTER_INITIAL_STATE } from "../Reducers/UserReduce
 import LoadingScreenComponent from "../../LoadingScreen/LoadingScreenComponent";
 import "../LoginComponent/LoginComponent.css";
 import axios from 'axios';
+import { useNavigate } from "react-router-dom";
+
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 import { REGISTER_USER } from "./../../../utils/Constant";
+
+const showError = (message) => {
+	toast.error(message, {
+		position: "top-left",
+		autoClose: 2000,
+		hideProgressBar: false,
+		closeOnClick: true,
+		pauseOnHover: false,
+		draggable: false,
+		progress: undefined,
+
+	});
+}
+
+const showInfoMessage = (message) => {
+	toast.info(message, {
+		position: "top-left",
+		autoClose: 2000,
+		hideProgressBar: false,
+		closeOnClick: true,
+		pauseOnHover: false,
+		draggable: false,
+		progress: undefined,
+
+	});
+}
+
+
 const RegisterComponent = () => {
 
 	const [userState, dispatch] = useReducer(UserReducer, USER_REGISTER_INITIAL_STATE);
+
+	let navigation = useNavigate();
 
 	const handleChange = (e) => {
 		dispatch({
@@ -19,26 +53,32 @@ const RegisterComponent = () => {
 	const onSubmit = async (e) => {
 		e.preventDefault();
 		if (!userState.user.firstName) {
-			return alert("First Name Required");
-
+			showError("Please provide first name");
+			return;
 		}
 		if (!userState.user.lastName) {
-			return alert("Last Name Required");
+			showError("Please provide last name");
+			return;
 		}
 		if (!userState.user.email) {
-			return alert("Email Required");
+			showError("Please provide email");
+			return;
 		}
 		if (!userState.user.password) {
-			return alert("Password Required");
+			showError("Please provide password");
+			return;
 		}
 		if (!userState.user.repeatPassword) {
-			return alert("Repeat Password Required");
+			showError("Please provide repeat password");
+			return;
 		}
 		if (!(userState.user.repeatPassword === userState.user.password)) {
-			return alert("Password doesn't matched");
+			showError("Password doesn't matched");
+			return;
 		}
 		if (!userState.user.phoneNumber) {
-			return alert("Phone NUmber Required");
+			showError("Please provide Phone Number");
+			return;
 		}
 
 		try {
@@ -46,24 +86,23 @@ const RegisterComponent = () => {
 				type: "POST_USER",
 				payload: { name: e.target.name, value: e.target.value, error: "" },
 			});
-			var result = await axios.post(REGISTER_USER, userState.user);
-			dispatch({
-				type: "POST_USER_SUCCESS_FULLY",
-				payload: userState.user,
-				error: ""
-			});
+
+			await axios.post(REGISTER_USER, userState.user);
+			showInfoMessage("Please login to continue");
+			navigation("/login")
 		} catch (error) {
 			dispatch({
 				type: "POST_USER_ERROR",
-				payload: { name: e.target.name, value: e.target.value, error: error },
+				payload: { name: e.target.name, value: e.target.value, },
 			});
-			alert(error);
+			showError(error.response.data.error.message
+			);
 		}
-
 	}
 
 	return (
 		<div>
+			<ToastContainer />
 			{
 				userState.loading && <LoadingScreenComponent></LoadingScreenComponent>
 			}
@@ -82,7 +121,7 @@ const RegisterComponent = () => {
 					</div>
 				</form>
 			</div>
-		</div>
+		</div >
 	)
 }
 

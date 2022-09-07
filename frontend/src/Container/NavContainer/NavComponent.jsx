@@ -28,6 +28,11 @@ const NavComponent = () => {
 							</button>
 						</Link>
 					</li>
+					<li>
+						<Link to='/exercises'>
+							<button>Exercises</button>
+						</Link>
+					</li>
 					<li><button>Classes</button></li>
 					<li><button>Trainers</button></li>
 					<li><button>Blog</button></li>

@@ -19,7 +19,7 @@ bodyPartsSchema.statics.createBodyPart = async function (bodyPart) {
 			var bodypart = await this.create({ name: bodyPart.name });
 			return {
 				success: true,
-				bodyPart
+				bodypart
 			}
 		}
 		return {
@@ -28,6 +28,24 @@ bodyPartsSchema.statics.createBodyPart = async function (bodyPart) {
 				name: "namerequired",
 				message: "Name is required"
 			}
+		}
+	} catch (error) {
+		return {
+			success: false,
+			error: {
+				name: error.name,
+				message: error.message
+			}
+		}
+	}
+}
+
+bodyPartsSchema.statics.getAllBodyparts = async function () {
+	try {
+		var bodyParts = await this.find();
+		return {
+			success: true,
+			bodyParts
 		}
 	} catch (error) {
 		return {

@@ -10,7 +10,6 @@ export const USER_REGISTER_INITIAL_STATE = {
 		avatar: ""
 	},
 	loading: false,
-	error: ""
 }
 
 export const UserReducer = (state, action) => {
@@ -21,32 +20,27 @@ export const UserReducer = (state, action) => {
 			return {
 				loading: false,
 				user: user,
-				error: ""
 			};
 
 		case "POST_USER":
 			return {
 				loading: true,
 				user: { ...state.user },
-				error: ""
 			}
 
 		case "POST_USER_SUCCESS_FULLY":
 			return {
 				loading: false,
 				user: { ...state.user },
-				error: ""
 			}
 
 		case "POST_USER_ERROR":
 			return {
 				loading: false,
 				user: { ...state.user },
-				error: action.payload.error
 			}
 
 		default:
 			return state;
-
 	}
 }

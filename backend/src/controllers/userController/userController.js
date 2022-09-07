@@ -28,6 +28,7 @@ exports.userLogin = async (req, res, next) => {
 		var result = await User.userLogin(req.body);
 		if (result.success) {
 			setToken(result.user, 200, result.token, res);
+			return;
 		}
 		res.status(400).json(result);
 	} catch (error) {
@@ -41,6 +42,7 @@ exports.getLoggedInUser = async (req, res, next) => {
 		user: req.user
 	});
 }
+
 exports.logoutuser = async (req, res) => {
 	try {
 		/* This is setting the cookie to null. */
@@ -55,7 +57,7 @@ exports.logoutuser = async (req, res) => {
 		});
 	} catch (error) {
 		/* This is a way to handle errors. It is a middleware that is used to handle errors. */
-		return res.status(500).json({
+		res.status(500).json({
 			success: false,
 			error: {
 				name: error.name,

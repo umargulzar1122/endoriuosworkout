@@ -7,21 +7,25 @@ const LoginComponent = React.lazy(() => import("./Container/UserContainer/LoginC
 const ContainerComponent = React.lazy(() => import("./Container/ContainerComponent.jsx"));
 const RegisterComponent = React.lazy(() => import("./Container/UserContainer/RegisterComponent/RegisterComponent"));
 const ProfileComponent = React.lazy(() => import("./Container/UserContainer/ProfileComponent/ProfileComponent"));
+const ExerciseContainer = React.lazy(() => import('./Container/ExerciseContainer/ExerciseContainer'));
 function App() {
   return (
     <>
-      <video autoPlay={true} muted playsInline={true} loop={true} id="backvideo">
+      {/* <video autoPlay={true} muted playsInline={true} loop={true} id="backvideo">
         <source src={Video}>
         </source>
-      </video>
+      </video> */}
       <div className='hero'>
-        <NavComponent></NavComponent>
-        <Routes>
-          <Route path='/' element={<ContainerComponent />}></Route>
-          <Route path='/login' element={<LoginComponent />}></Route>
-          <Route path='/register' element={<RegisterComponent></RegisterComponent>}></Route>
-          <Route path='/profile' element={<ProfileComponent />}></Route>
-        </Routes>
+        <div className='container-fluid'>
+          <NavComponent></NavComponent>
+          <Routes>
+            <Route path='/' element={<ContainerComponent />}></Route>
+            <Route path='/login' element={<LoginComponent />}></Route>
+            <Route path='/register' element={<RegisterComponent></RegisterComponent>}></Route>
+            <Route path='/profile' element={<ProfileComponent />}></Route>
+            <Route path='/exercises' element={<ExerciseContainer />}> </Route>
+          </Routes>
+        </div>
       </div>
     </>
   );

@@ -41,4 +41,23 @@ equipmentSchema.statics.createEquipment = async function (equipment) {
 	}
 }
 
+equipmentSchema.statics.getAllEqipments = async function () {
+	try {
+		var equipments = await this.find();
+		return {
+			success: true,
+			equipments
+		}
+
+	} catch (error) {
+		return {
+			success: false,
+			error: {
+				name: error.name,
+				message: error.message
+			}
+		}
+	}
+}
+
 module.exports = mongoose.model("Equipment", equipmentSchema);

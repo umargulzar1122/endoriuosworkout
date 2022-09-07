@@ -1,24 +1,25 @@
 .hero {
-  position: relative;
   width: 100%;
   height: 100vh;
-  bottom: 0;
   color: #f1f1f1;
   background-attachment: fixed;
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
-  background: rgba(0, 0, 0, 0.5);
-  /* background-image: url(./assets//img/bg-2.jpg); */
+  background-image: url(./assets//img/bg-n.jpg);
 }
-#backvideo {
+.container-fluid {
+  background: rgb(0, 0, 0, 0.5);
+  height: 100vh;
+}
+/* #backvideo {
   position: absolute;
   right: 0;
   bottom: 0;
   width: 100%;
   height: 100vh;
-}
-@media (min-aspect-ratio: 16/9) {
+} */
+/* @media (min-aspect-ratio: 16/9) {
   #backvideo {
     width: 100%;
     height: auto;
@@ -29,4 +30,4 @@
     width: auto;
     height: 100%;
   }
-}
+} */
