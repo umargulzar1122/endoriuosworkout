@@ -46,8 +46,7 @@ exerciseSchema.statics.createExercise = async function (exercise) {
 			});
 		return { success: true, exercise };
 	} catch (error) {
-		return { success: true, error: { name: error.name, message: error.message } };
-
+		return { success: false, error: { name: error.name, message: error.message } };
 	}
 }
 

@@ -41,4 +41,23 @@ targetSchema.statics.createTarget = async function (target) {
 	}
 }
 
+targetSchema.statics.getTargets = async function () {
+	try {
+		var targets = await this.find();
+		return {
+			success: true,
+			targets
+		}
+
+	} catch (error) {
+		return {
+			success: false,
+			error: {
+				name: error.name,
+				message: error.message
+			}
+		}
+	}
+}
+
 module.exports = mongoose.model("Target", targetSchema);

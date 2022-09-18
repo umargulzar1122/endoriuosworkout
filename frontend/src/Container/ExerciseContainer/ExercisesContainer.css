@@ -30,6 +30,29 @@ option:disabled {
 label {
   font-size: 14px;
 }
+.card__container {
+  font-size: 13px;
+  padding: 20px;
+  display: flex;
+  flex-direction: row;
+}
+.card {
+  border: none;
+  transition: 0.3s;
+  width: 200px;
+  cursor: pointer;
+  margin: 20px;
+}
+
+.card:hover {
+  /* box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2); */
+}
+
+.container {
+  padding: 2px 16px;
+  background: rgb(0, 0, 0, 0.05);
+  color: #000;
+}
 /* .body__parts .form-select {
   background: transparent;
   color: #fff;

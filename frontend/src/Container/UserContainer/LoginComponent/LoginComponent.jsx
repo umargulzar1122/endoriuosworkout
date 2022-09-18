@@ -85,7 +85,7 @@ const LoginComponent = () => {
 						<button type="submit" className=''>Login</button>
 						{/* <button type="button" className="" style={{}}>Cancel</button> */}
 					</div>
-					<div>
+					<div className='remmeber__me'>
 						<label>
 							<input type="checkbox" defaultChecked="checked" name="remember" /> Remember me
 						</label>
