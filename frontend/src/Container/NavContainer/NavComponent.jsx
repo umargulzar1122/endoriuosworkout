@@ -22,37 +22,29 @@ const NavComponent = () => {
 			<div className='nav__container'>
 				<ul>
 					<li>
-						<Link to="/">
-							<button>
-								Home
-							</button>
+						<Link to="/" href="#home">
+							Home
 						</Link>
 					</li>
 					<li>
-						<Link to='/exercises'>
-							<button>Exercises</button>
-						</Link>
+						<a href='#exercises' className=''>Exercises</a>
 					</li>
-					<li><button>Classes</button></li>
-					<li><button>Trainers</button></li>
-					<li><button>Blog</button></li>
-					<li><button>Gallery</button></li>
-					<li><button>Contact us</button></li>
+					<li><a href='#abc'>Classes</a></li>
+					<li><a href='#abc'>Trainers</a></li>
+					<li><a href='#abc'>Blog</a></li>
+					<li><a href='#abc'>Gallery</a></li>
+					<li><a href='#abc'>Contact us</a></li>
 					{
 						!userData &&
 						<>
 							<li>
 								<Link to='/login'>
-									<button className='button'>
-										Login
-									</button>
+									Login
 								</Link>
 							</li>
 							<li>
 								<Link to="/register">
-									<button className='button'>
-										Sign Up
-									</button>
+									Sign Up
 								</Link>
 							</li>
 						</>

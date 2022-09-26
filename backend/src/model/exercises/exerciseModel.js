@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 const BodyPart = require("./bodyPartsModel");
 const Equipment = require("./equipmentModel");
 const Target = require("./targetModel");
+var ObjectId = require('mongodb').ObjectId;
 
 const exerciseSchema = new mongoose.Schema(
 	{
@@ -51,9 +52,30 @@ exerciseSchema.statics.createExercise = async function (exercise) {
 }
 
 
-exerciseSchema.statics.getAllExercises = async function () {
+exerciseSchema.statics.getAllExercises = async function (query) {
 	try {
-		var exercises = await this.find().populate(['bodyPart', 'equipment', 'target']).exec();
+		var resultPerPage = 15;
+		var exercisesCount = await this.countDocuments();
+		console.log("🚀 ~ file: exerciseModel.js ~ line 59 ~ exercisesCount", exercisesCount);
+		const currentPage = Number(1) || 1;
+		const skip = (resultPerPage) * (currentPage - 1);
+
+		//this.query = this.query.limit(resultPerPage).skip(skip);
+		var exercises = await this.find({
+			$or:
+				[
+					query
+					// {
+					// 	target: ObjectId("63131d99e77ebfe8b4fa3111")
+					// },
+					// {
+					// 	equipment: ObjectId("63131d99e77ebfe8b4fa3111")
+					// },
+					// {
+					// 	bodyPart: ObjectId("63131d99e77ebfe8b4fa3111")
+					// }
+				]
+		}).limit(resultPerPage).skip(skip).populate(['bodyPart', 'equipment', 'target']).exec();
 		return {
 			success: true,
 			exercises

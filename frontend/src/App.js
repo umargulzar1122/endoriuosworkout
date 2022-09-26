@@ -16,14 +16,14 @@ function App() {
         </source>
       </video> */}
       <div className='hero'>
-        <div className='container-fluid'>
+        <div style={{ display: "flex", flexDirection: "column" }}>
           <NavComponent></NavComponent>
           <Routes>
             <Route path='/' element={<ContainerComponent />}></Route>
             <Route path='/login' element={<LoginComponent />}></Route>
             <Route path='/register' element={<RegisterComponent></RegisterComponent>}></Route>
             <Route path='/profile' element={<ProfileComponent />}></Route>
-            <Route path='/exercises' element={<ExerciseContainer />}> </Route>
+            {/* <Route path='/exercises' element={<ExerciseContainer />}> </Route> */}
           </Routes>
         </div>
       </div>

@@ -4,7 +4,7 @@ import "./HeroContainer.css";
 const HeroContainer = () => {
 	return (
 		<>
-			<div className='hero__container'>
+			<div className='hero__container' id='home'>
 				<div className='heading'>
 					<h2>
 						INCREASE YOUR MUSCLE POWER
