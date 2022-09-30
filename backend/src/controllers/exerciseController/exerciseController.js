@@ -33,7 +33,7 @@ exports.getAllExercise = async (req, res, next) => {
 		if (req.query["bodyPart"]) {
 			filterQuery["bodyPart"] = ObjectId(req.query["bodyPart"]);
 		}
-		var result = await Exercise.getAllExercises({ ...filterQuery });
+		var result = await Exercise.getAllExercises({ ...filterQuery }, req.query["pageNumber"]);
 		return res.status(200).json(result);
 	} catch (error) {
 		return res.status(400).json({

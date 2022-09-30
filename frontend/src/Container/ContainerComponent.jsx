@@ -5,8 +5,8 @@ const ExerciseContainer = React.lazy(() => import('../Container/ExerciseContaine
 const ContainerComponent = () => {
 	return (
 		<>
-			<HeroContainer></HeroContainer>
-			<ExerciseContainer></ExerciseContainer>
+			{/* <HeroContainer></HeroContainer> */}
+			{/* <ExerciseContainer></ExerciseContainer> */}
 		</>
 	)
 }

@@ -1,11 +1,12 @@
-import React, { useReducer } from 'react';
+import React, { useReducer, useContext } from 'react';
 import { UserReducer, USER_REGISTER_INITIAL_STATE } from "../Reducers/UserReducer";
 import LoadingScreenComponent from "../../LoadingScreen/LoadingScreenComponent";
 import "../LoginComponent/LoginComponent.css";
 import axios from 'axios';
 import { useNavigate } from "react-router-dom";
-
+import { motion } from "framer-motion";
 import { ToastContainer, toast } from 'react-toastify';
+import { AuthContext } from "../../../Container/Context/AuthContext";
 import 'react-toastify/dist/ReactToastify.css';
 
 import { REGISTER_USER } from "./../../../utils/Constant";
@@ -42,7 +43,12 @@ const RegisterComponent = () => {
 	const [userState, dispatch] = useReducer(UserReducer, USER_REGISTER_INITIAL_STATE);
 
 	let navigation = useNavigate();
+	const { currentUser } = useContext(AuthContext);
 
+	if (currentUser) {
+		window.location.href = "/";
+		return;
+	}
 	const handleChange = (e) => {
 		dispatch({
 			type: "CHANGE_INPUT",
@@ -107,19 +113,23 @@ const RegisterComponent = () => {
 				userState.loading && <LoadingScreenComponent></LoadingScreenComponent>
 			}
 			<div className='login__container'>
-				<form onSubmit={onSubmit}>
-					<input type="text" value={userState.user.firstName} placeholder="First Name" name="firstName" onChange={handleChange} />
-					<input type="text" value={userState.user.lastName} placeholder="Last Name" name="lastName" onChange={handleChange} />
-					<input type="text" value={userState.user.email} placeholder="Enter Email" name="email" onChange={handleChange} />
-					<input type="text" value={userState.user.userName} placeholder="Enter UserName" name="userName" onChange={handleChange} />
-					<input type="password" value={userState.user.password} placeholder="Enter Password" name="password" onChange={handleChange} />
-					<input type="password" value={userState.user.repeatPassword} placeholder="Repeat Password" name="repeatPassword" onChange={handleChange} />
-					<input type="tel" value={userState.user.phoneNumber} placeholder="Enter Phone Number" name="phoneNumber" onChange={handleChange} />
-					<div className='buttons__container'>
-						<button type="submit" className=''>Sign Up</button>
-						{/* <button type="button" className="" style={{}}>Cancel</button> */}
-					</div>
-				</form>
+				<div className='overlay__login'>
+					<motion.form
+						onSubmit={onSubmit}
+						className="form__container"
+					>
+						<input type="text" value={userState.user.firstName} placeholder="First Name" name="firstName" onChange={handleChange} />
+						<input type="text" value={userState.user.lastName} placeholder="Last Name" name="lastName" onChange={handleChange} />
+						<input type="text" value={userState.user.email} placeholder="Enter Email" name="email" onChange={handleChange} />
+						<input type="text" value={userState.user.userName} placeholder="Enter UserName" name="userName" onChange={handleChange} />
+						<input type="password" value={userState.user.password} placeholder="Enter Password" name="password" onChange={handleChange} />
+						<input type="password" value={userState.user.repeatPassword} placeholder="Repeat Password" name="repeatPassword" onChange={handleChange} />
+						<input type="tel" value={userState.user.phoneNumber} placeholder="Enter Phone Number" name="phoneNumber" onChange={handleChange} />
+						<div className='buttons__container'>
+							<button type="submit" className=''>Sign Up</button>
+						</div>
+					</motion.form>
+				</div>
 			</div>
 		</div >
 	)

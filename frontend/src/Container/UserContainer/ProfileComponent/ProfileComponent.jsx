@@ -34,8 +34,8 @@ const showInfoMessage = (message) => {
 }
 
 const ProfileComponent = () => {
-	const userData = useContext(UserContext);
-	USER_REGISTER_INITIAL_STATE.user = userData;
+	//const userData = useContext(UserContext);
+	//USER_REGISTER_INITIAL_STATE.user = userData;
 	const [userState, dispatch] = useReducer(UserReducer, USER_REGISTER_INITIAL_STATE);
 
 

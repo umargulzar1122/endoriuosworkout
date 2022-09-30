@@ -52,33 +52,26 @@ exerciseSchema.statics.createExercise = async function (exercise) {
 }
 
 
-exerciseSchema.statics.getAllExercises = async function (query) {
+exerciseSchema.statics.getAllExercises = async function (query, pageNumber) {
 	try {
 		var resultPerPage = 15;
-		var exercisesCount = await this.countDocuments();
-		console.log("🚀 ~ file: exerciseModel.js ~ line 59 ~ exercisesCount", exercisesCount);
-		const currentPage = Number(1) || 1;
-		const skip = (resultPerPage) * (currentPage - 1);
-
-		//this.query = this.query.limit(resultPerPage).skip(skip);
+		var exercisesCount = await this.countDocuments({
+			$or:
+				[
+					query
+				]
+		});
+		const skip = (resultPerPage) * (pageNumber - 1);
 		var exercises = await this.find({
 			$or:
 				[
 					query
-					// {
-					// 	target: ObjectId("63131d99e77ebfe8b4fa3111")
-					// },
-					// {
-					// 	equipment: ObjectId("63131d99e77ebfe8b4fa3111")
-					// },
-					// {
-					// 	bodyPart: ObjectId("63131d99e77ebfe8b4fa3111")
-					// }
 				]
 		}).limit(resultPerPage).skip(skip).populate(['bodyPart', 'equipment', 'target']).exec();
 		return {
 			success: true,
-			exercises
+			exercises,
+			exercisesCount
 		}
 	} catch (error) {
 		return {

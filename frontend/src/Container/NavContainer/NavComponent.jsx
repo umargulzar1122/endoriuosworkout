@@ -1,30 +1,63 @@
-import React, { useContext } from 'react'
-import { Link } from "react-router-dom";
+import React, { useContext, useState } from 'react'
+import { Link, useLocation } from "react-router-dom";
 import axios from "axios";
 import { LOGOUT_USER } from "../../utils/Constant";
+import { AiOutlineMenu, AiOutlineClose } from "react-icons/ai";
+import { AuthContext } from "../../Container/Context/AuthContext";
 import "./NavComponent.css";
 
-import { UserContext } from '../../index';
 
 const NavComponent = () => {
 
-	const userData = useContext(UserContext);
-	const logout = async () => {
-		try {
-			await axios.get(LOGOUT_USER);
-			window.location.href = "/";
-		} catch (error) {
-
-		}
-	}
+	const [isOpenMenu, setIsOpenMenu] = useState(false);
+	const location = useLocation();
+	const { currentUser, logout } = useContext(AuthContext);
 	return (
 		<>
-			<div className='nav__container'>
+			<div className="menu" style={{ color: location.pathname === "/" || location.pathname.includes("login") || location.pathname.includes("register") ? "#fff" : "#000" }}>
+				{
+					!isOpenMenu &&
+					< AiOutlineMenu onClick={() => {
+						setIsOpenMenu(!isOpenMenu);
+					}} />
+				}
+			</div>
+			<div id="myNav" className="overlay" style={{ height: isOpenMenu ? "100%" : "0%" }}>
+				{
+					isOpenMenu &&
+					<div className='closebtn' onClick={() => { setIsOpenMenu(!isOpenMenu) }}>
+						<AiOutlineClose></AiOutlineClose>
+					</div>
+				}
+				<div className="overlay-content">
+					<Link to="/" onClick={() => { setIsOpenMenu(!isOpenMenu) }}>Home</Link>
+					<Link to="/exercises" onClick={() => { setIsOpenMenu(!isOpenMenu) }}>Exercises</Link>
+					{
+						!currentUser &&
+						<>
+							<Link to="/login" onClick={() => { setIsOpenMenu(!isOpenMenu) }}>Login</Link>
+							<Link to="/register" onClick={() => { setIsOpenMenu(!isOpenMenu) }}>Sign Up</Link>
+						</>
+					}
+					{
+						currentUser &&
+						<>
+							<Link to="/profile" onClick={() => { setIsOpenMenu(!isOpenMenu) }}>Profile</Link>
+							<button className='logout__button' onClick={async () => {
+								await logout();
+								setIsOpenMenu(!isOpenMenu)
+							}}
+							>Logout</button>
+						</>
+					}
+				</div>
+			</div>
+
+
+			{/* <div className='nav__container'>
 				<ul>
 					<li>
-						<Link to="/" href="#home">
-							Home
-						</Link>
+						<a href='#home' className=''>Home</a>
 					</li>
 					<li>
 						<a href='#exercises' className=''>Exercises</a>
@@ -66,8 +99,9 @@ const NavComponent = () => {
 							</li>
 						</>
 					}
-				</ul>
-			</div>
+				</ul> 
+		</div>
+				*/}
 		</>
 	)
 }

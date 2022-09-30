@@ -1,4 +1,73 @@
-.nav__container {
+.menu {
+  position: absolute;
+  right: 20px;
+  top: 20px;
+  font-size: 30px;
+  cursor: pointer;
+}
+.overlay {
+  height: 0%;
+  width: 100%;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  background-color: rgb(0, 0, 0);
+  background-color: rgba(0, 0, 0, 0.9);
+  overflow-y: hidden;
+  transition: 0.5s;
+}
+
+.overlay-content {
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.overlay a,
+.logout__button {
+  padding: 8px;
+  text-decoration: none;
+  font-size: 20px;
+  color: #818181;
+  display: block;
+  transition: 0.3s;
+}
+.logout__button {
+  background: transparent;
+  width: 20px;
+}
+.overlay a:hover,
+.overlay a:focus,
+.logout__button:hover,
+.logout__button:focus {
+  color: #f1f1f1;
+  background: transparent;
+}
+
+.overlay .closebtn {
+  color: #d3d3d3;
+  position: absolute;
+  right: 20px;
+  top: 20px;
+  font-size: 30px;
+  cursor: pointer;
+}
+
+/* @media screen and (max-height: 450px) {
+  .overlay {
+    overflow-y: auto;
+  }
+  .overlay a {
+    font-size: 20px;
+  }
+  .overlay .closebtn {
+    top: 15px;
+    right: 35px;
+  }
+} */
+/* .nav__container {
   position: fixed;
   width: 100%;
   background: rgba(0, 0, 0, 0.8);
@@ -43,4 +112,4 @@
 
 .button:hover {
   background: #e1193e !important;
-}
+} */

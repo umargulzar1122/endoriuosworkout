@@ -1,140 +1,29 @@
 import React, { useEffect, useReducer } from 'react'
 import {
 	GET_ALL_EQUIPMWNTS, GET_ALL_TARGET,
-	GET_EXERCISES, GET_EXERCISE_COMMON_DATA_START, GET_ALL_BODY_PARTS, GET_EXERCISE_COMMON_DATA_SUCCESS, GET_EXERCISE_COMMON_DATA_FAILED
+	GET_EXERCISES, GET_EXERCISE_COMMON_DATA_START, GET_ALL_BODY_PARTS, GET_EXERCISE_COMMON_DATA_SUCCESS, GET_EXERCISE_COMMON_DATA_FAILED, GET_FILTER_EXERCISE_COMMON_DATA, SET_PAGE_NUMBER
 } from '../../utils/Constant';
-//import { BodyPartsreducer, BODY_PARTS_INITIAL_STATE } from './Reducers/BodyPartsReducer';
-import LoadingScreenComponent from '../LoadingScreen/LoadingScreenComponent';
+import { motion } from "framer-motion";
 import axios from 'axios';
-//import { EquipmentReducer, EQUIPMENT_INITIAL_STATE } from './Reducers/EquipmentReducer';
-//import { TargetReducer, TARGETS_INITIAL_STATE } from './Reducers/TargetReducer';
+import ReactPaginate from "https://cdn.skypack.dev/react-paginate@7.1.3";
 import { ExerciseCommonReducer, INITIAL_STATE } from "./Reducers/ExerciseCommonRecuder";
 import "./ExercisesContainer.css";
 
-const ExerciseContainer = () => {
+var filter = { bodyPart: "", equipment: "", target: "" };
 
+const ExerciseContainer = () => {
 	const [exerciseCommonState, exerciseCommonRecuderDispatch] = useReducer(ExerciseCommonReducer, INITIAL_STATE);
 
-	//const [bodyPartsState, bodyPartsDispatch] = useReducer(BodyPartsreducer, BODY_PARTS_INITIAL_STATE);
-	//const [equipmentState, equipmentDispatch] = useReducer(EquipmentReducer, EQUIPMENT_INITIAL_STATE);
-	//const [targetState, targetDispatch] = useReducer(TargetReducer, TARGETS_INITIAL_STATE);
-
-	//console.log("🚀 ~ file: ExerciseContainer.jsx ~ line 21 ~ ExerciseContainer ~ equipmentState", equipmentState)
-	//console.log("🚀 ~ file: ExerciseContainer.jsx ~ line 17 ~ ExerciseContainer ~ bodyPartsState", bodyPartsState)
-
 	useEffect(() => {
-
 		getAllData();
-
-		// bodyPartsDispatch(
-		// 	{
-		// 		type: ACTION_FETCH_BODY_PARTS_STARTS,
-		// 		payload: []
-		// 	}
-		// );
-		// equipmentDispatch(
-		// 	{
-		// 		type: ACTION_FETCH_EQUIPMENTS_STARTS,
-		// 		payload: []
-		// 	}
-		// );
-		// targetDispatch(
-		// 	{
-		// 		type: ACTION_FETCH_TARGETS_STARTS,
-		// 		payload: []
-		// 	}
-		// );
-		// getAllBodyparts();
-		// getAllEqipments();
-		// getAllTargets();
-
-		// getExercises();
 	}, []);
 
-	const getAllBodyparts = async () => {
-		try {
-			//	var { bodyParts } = await (await axios.get(GET_ALL_BODY_PARTS)).data;
-			//debugger
-			// bodyPartsDispatch(
-			// 	{
-			// 		type: ACTION_FETCH_BODY_PARTS_SUCEESS,
-			// 		payload: {
-			// 			bodyParts,
-			// 		}
-			// 	}
-			// );
-		} catch (error) {
-			// bodyPartsDispatch(
-			// 	{
-			// 		type: ACTION_FETCH_BODY_PARTS_FAILED,
-			// 		payload: {
-			// 			bodyParts: [],
-			// 			error: error
-			// 		}
-			// 	}
-			// );
-		}
-	}
-
-	const getAllEqipments = async () => {
-		try {
-			//var { equipments } = await (await axios.get(GET_ALL_EQUIPMWNTS)).data;
-			//debugger
-			// equipmentDispatch(
-			// 	{
-			// 		type: ACTION_FETCH_EQUIPMENTS_SUCEESS,
-			// 		payload: {
-			// 			equipments,
-			// 		}
-			// 	}
-			// );
-		} catch (error) {
-			// equipmentDispatch(
-			// 	{
-			// 		type: ACTION_FETCH_EQUIPMENTS_FAILED,
-			// 		payload: {
-			// 			bodyParts: [],
-			// 			error: error
-			// 		}
-			// 	}
-			// );
-		}
-	}
-
-	const getAllTargets = async () => {
-		try {
-			//var { targets } = await (await axios.get(GET_ALL_TARGET)).data;
-			// targetDispatch(
-			// 	{
-			// 		type: ACTION_FETCH_TARGETS_SUCCESS,
-			// 		payload: {
-			// 			targets,
-			// 		}
-			// 	}
-			// );
-		} catch (error) {
-			// targetDispatch(
-			// 	{
-			// 		type: ACTION_FETCH_TARGETS_FAILED,
-			// 		payload: {
-			// 			targets: [],
-			// 			error: error
-			// 		}
-			// 	}
-			// );
-		}
-	}
-
-	const getExercises = async () => {
-
-		var exersises = await axios.get(GET_EXERCISES);
-		console.log("🚀 ~ file: ExerciseContainer.jsx ~ line 128 ~ getExercises ~ exersises", exersises)
-
-	}
+	useEffect(() => {
+		getFilterExercises(1);
+	}, [exerciseCommonState.currentPage]);
 
 	const getAllData = async () => {
 		try {
-
 
 			exerciseCommonRecuderDispatch(
 				{
@@ -152,8 +41,7 @@ const ExerciseContainer = () => {
 			var { bodyParts } = await (await axios.get(GET_ALL_BODY_PARTS)).data;
 			var { equipments } = await (await axios.get(GET_ALL_EQUIPMWNTS)).data;
 			var { targets } = await (await axios.get(GET_ALL_TARGET)).data;
-			var { exercises } = await (await axios.get(GET_EXERCISES)).data;
-			console.log("🚀 ~ file: ExerciseContainer.jsx ~ line 156 ~ getAllData ~ exercises", exercises)
+			const result = await (await axios.get(GET_EXERCISES)).data;
 
 			exerciseCommonRecuderDispatch(
 				{
@@ -162,13 +50,12 @@ const ExerciseContainer = () => {
 						bodyParts: [...bodyParts],
 						targets: [...targets],
 						equipments: [...equipments],
-						exercises: [...exercises],
+						exercises: [...result.exercises],
+						totalCount: result.exercisesCount,
 						loading: false
 					}
 				}
 			);
-
-
 		} catch (error) {
 			console.error("🚀 ~ file: ExerciseContainer.jsx ~ line 140 ~ getAllData ~ error", error);
 			exerciseCommonRecuderDispatch(
@@ -187,56 +74,86 @@ const ExerciseContainer = () => {
 	}
 
 
+	const handleFilter = (e) => {
+		if (e.target.value !== "-1") {
+			filter[e.target.name] = e.target.value;
+			console.log("🚀 ~ file: ExerciseContainer.jsx ~ line 77 ~ handleFilter ~ filter", filter)
+		} else {
+			filter[e.target.name] = "";
+		}
+	}
+
+	const handlePageChange = (event) => {
+		getFilterExercises(event.selected + 1);
+	}
+
+	const getFilterExercises = async (currentPage) => {
+		try {
+			let query = "";
+			if (filter['bodyPart']) {
+				query += 'bodyPart=' + filter['bodyPart'];
+			}
+			if (filter['target']) {
+				query += '&target=' + filter['target'];
+			}
+			if (filter['equipment']) {
+				query += '&equipment=' + filter['equipment'];
+			}
+			var result = await (await axios.get(`${GET_EXERCISES}?${query}&pageNumber=${currentPage}`)).data;
+			exerciseCommonRecuderDispatch(
+				{
+					type: GET_FILTER_EXERCISE_COMMON_DATA,
+					payload: {
+						exercises: [...result.exercises],
+						totalCount: result.exercisesCount
+					}
+				}
+			);
+		} catch (error) {
+			console.log("🚀 ~ file: ExerciseContainer.jsx ~ line 89 ~ getFilterExercises ~ error", error)
+		}
+	}
 
 	return (
 		<>
 
 			<div className='execiser-container' id='exercises'>
-				{
-					//exerciseCommonState.loading ? <LoadingScreenComponent /> : ""
-				}
 				<div className='options__container'>
 					<div className='option__container'>
 						<label htmlFor="bodyParts">Choose Body:</label>
-						<select name="bodyParts" id="bodyParts">
+						<select name="bodyPart" id="bodyParts" onChange={handleFilter}>
+							<option value="-1">-- Select --</option>
 							{
 								exerciseCommonState.bodyParts && exerciseCommonState.bodyParts.map((bodyPart) => {
 									return (<option key={bodyPart._id} value={bodyPart._id}>{bodyPart.name}</option>)
 								})
 							}
-							{/* <option value="volvo">Volvo</option>
-							<option value="saab">Saab</option>
-							<option value="mercedes">Mercedes</option>
-							<option value="audi">Audi</option> */}
 						</select>
 					</div>
 					<div className='option__container'>
 						<label htmlFor="cars">Choose Equipment:</label>
-						<select name="cars" id="cars">
+						<select name="equipment" id="cars" onChange={handleFilter}>
+							<option value="-1">-- Select --</option>
 							{
 								exerciseCommonState.equipments && exerciseCommonState.equipments.map((equipment) => {
 									return (<option key={equipment._id} value={equipment._id}>{equipment.name}</option>)
 								})
 							}
-							{/* <option value="volvo">Volvo</option>
-							<option value="saab">Saab</option>
-							<option value="mercedes">Mercedes</option>
-							<option value="audi">Audi</option> */}
 						</select>
 					</div>
 					<div className='option__container'>
-						<label htmlFor="targets">Choose Target:</label>
-						<select name="targets" id="targets">
+						<label htmlFor="target">Choose Target:</label>
+						<select name="target" id="targets" onChange={handleFilter}>
+							<option value="-1">-- Select --</option>
 							{
 								exerciseCommonState && exerciseCommonState.targets.map((target) => {
 									return (<option key={target._id} value={target._id}>{target.name}</option>)
 								})
 							}
-							{/* <option value="volvo">Volvo</option>
-							<option value="saab">Saab</option>
-							<option value="mercedes">Mercedes</option>
-							<option value="audi">Audi</option> */}
 						</select>
+					</div>
+					<div>
+						<button className='button__filter' onClick={getFilterExercises}>Filter</button>
 					</div>
 				</div>
 
@@ -245,7 +162,11 @@ const ExerciseContainer = () => {
 						exerciseCommonState && exerciseCommonState.exercises.map((exercise) => {
 							return (
 								<>
-									<div className="card">
+									<motion.div className="card"
+										whileHover={{ scale: 1.02 }}
+										whileInView={{ opacity: [0.8, 1] }}
+										transition={{ duration: 0.5, type: 'keyframes' }}
+										key={`${exercise._id}`}>
 										<img src={exercise.gifUrl} alt="Avatar" style={{ width: "100%", background: "transparent" }} />
 										<div className="container">
 											<h6>{exercise.name}</h6>
@@ -253,11 +174,34 @@ const ExerciseContainer = () => {
 											<p>{exercise.equipment.name}</p>
 											<p>{exercise.target.name}</p>
 										</div>
-									</div>
+									</motion.div>
 								</>
 							)
 						})
 					}
+				</div>
+				<div style={{ display: "flex", margin: "40px", justifyContent: "center" }}>
+					<ReactPaginate
+						nextLabel=">"
+						onPageChange={handlePageChange}
+						pageRangeDisplayed={10}
+						marginPagesDisplayed={0}
+						pageCount={1532}
+						previousLabel="<"
+						pageClassName="page-item"
+						pageLinkClassName="page-link"
+						previousClassName="page-item"
+						previousLinkClassName="page-link"
+						nextClassName="page-item"
+						nextLinkClassName="page-link"
+						breakLabel="..."
+						breakClassName="page-item"
+						breakLinkClassName="page-link"
+						containerClassName="pagination"
+						activeClassName="active"
+						renderOnZeroPageCount={null}
+						style={{ padding: "40px" }}
+					/>
 				</div>
 			</div>
 		</>
